@@ -35,8 +35,17 @@ router.post('/item/create/:itemId', async (req, res) => {
     console.log(error);
   }
 });
-router.get('/item/list', (req, res) => {
-  prisma.item.findMany();
+//2. 아이템 리스트 조회
+router.get('/item/list', async (req, res) => {
+  const itemlist = await prisma.item.findMany({
+    data: {
+      itemCode: itemCode,
+      itemName: itemName,
+      atk: atk,
+      price: price,
+    },
+  });
+  return res.status.apply(200).json({ item_info: itemlist });
 });
 
 // [필수] 3. 특정 아이템 조회
